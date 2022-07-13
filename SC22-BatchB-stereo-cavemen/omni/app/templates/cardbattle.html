@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Yu-gi-oh Card Generator</title>
+        <link rel="icon" href="{{url_for('static',filename='/img/aicamplogo.png')}}" type="image/x-icon">
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+        <link href="{{url_for('static',filename='/css/styles.css')}}" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed home_body">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="{{url_for('home')}}">Home</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+          
+          
+            <!-- Navbar-->
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Content</div>
+                            <a class="nav-link" href="{{url_for('cardgen')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Card Generator
+                            </a>
+                            <a class="nav-link" href="{{url_for('cardbattle')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Card Battle
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Other</div>
+                            <a class="nav-link" href="{{url_for('howitworks')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                How it works
+                            </a>
+                            <a class="nav-link" href="{{url_for('teams')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                The Team
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small"></div>
+                    </div>
+                </nav>
+            </div>
+            <!--Navbar End-->
+        <div id = "etc">
+          
+          
+          <h1>Card Battle</h1>
+
+    <button type="submit" onclick="distribuirCartas()" id="bDistribuirCartas"><p>Sortear cartas</p></button>
+
+    <h2 id="tAtributo"></h2>
+
+    <div id="atributos">
+        
+    </div>
+
+    <div id="botoes">
+        <button type="submit" onclick="batalhar()" id="bBatalhar" disabled = "true" ><p>Batalhar</p></button>
+        <button type="submit" onclick="resetar()" id="bResetar" disabled = "true"><p>Reset</p></button>
+    </div>
+
+    <div id="cards">
+        
+        <div id="jogador">
+            <div class="nome"></div>
+            <div id="imgCard">
+                
+            </div>
+            <div class="atributosExibirCarta">
+            </div>
+        </div>
+
+        <div id="bot">
+            <div id="nome"></div>
+            <div id="imgCard"></div>
+            <div class="atributosExibirCarta">
+            </div>
+        </div>
+
+    </div>
+        </div>

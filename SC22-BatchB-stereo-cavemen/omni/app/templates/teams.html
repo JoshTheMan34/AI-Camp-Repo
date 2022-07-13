@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Yu-gi-oh Card Generator</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+        <link href="{{url_for('static',filename='/css/styles.css')}}" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+  <body class="sb-nav-fixed teams_body">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+      <!-- Navbar Brand-->
+      <a class="navbar-brand ps-3" href="{{url_for('home')}}">Home</a> 
+      <!-- Sidebar Toggle-->
+      <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+      href="#!" id="sidebarToggle"><i class="fas fa-bars"></i></button> 
+      <!-- Navbar Search
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+            -->
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">IDK</a></li>
+                        <li><a class="dropdown-item" href="#!">TEXT</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">figure this out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Content</div>
+                            <a class="nav-link" href="{{url_for('cardgen')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Card Generator
+                            </a>
+                            <a class="nav-link" href="{{url_for('cardbattle')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Card Battle
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Other</div>
+                            <a class="nav-link" href="{{url_for('howitworks')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                How it works
+                            </a>
+                            <a class="nav-link" href="{{url_for('teams')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                The Team
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small"></div>
+                    </div>
+                </nav>
+            </div>
+            <!--Navbar End-->
+
+                <div id="layoutSidenav_content">
+                <main>
+
+                    <div class="bs-dark2">
+                        <div class="container py-5">
+                          <div class="row h-100 align-items-center py-5">
+                            <div class="col-lg-6">
+                              <h1 class="display-4 gs_reveal">About us </h1>
+                              <p class="lead text-muted mb-0 gs_reveal">We are a small team of 6 people creating an AI related website.</p>
+                            </div>
+                            <div class="col-lg-6 d-none d-lg-block gs_reveal gs_reveal_fromRight"><img src="{{url_for('static',filename='/img/Team meeting_Isometric.png')}}" alt="" class="img-fluid"></div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="bs-dark3 py-5">
+                        <div class="container py-5">
+                          <div class="row align-items-center mb-5">
+                            <div class="col-lg-6 order-2 order-lg-1"><div class="gs_reveal gs_reveal_fromLeft"><i class="fa fa-bar-chart fa-2x mb-3 text-primary"></i></div>
+                              <h2 class="font-weight-light gs_reveal">How long did we have to make it</h2>
+                              <p class="font-italic text-muted mb-4 gs_reveal">Because of the limited time constraints we had, we completed everything in under 3 weeks.</p><a href="#" class="btn btn-light px-5 rounded-pill shadow-sm gs_reveal">Learn More</a>
+                            </div>
+                            <div class="col-lg-5 px-5 mx-auto order-1 order-lg-2 gs_reveal gs_reveal_fromRight"><img src="{{url_for('static',filename='/img/Coding _Outline.png')}}" alt="" class="img-fluid mb-4 mb-lg-0"></div>
+                          </div>
+                          <div class="row align-items-center">
+                            <div class="col-lg-5 px-5 mx-auto gs_reveal gs_reveal_fromLeft"><img src="{{url_for('static',filename='/img/Online presentation_Monochromatic.png')}}" alt="" class="img-fluid mb-4 mb-lg-0"></div>
+                            <div class="col-lg-6"><div class="gs_reveal gs_reveal_fromRight"><i class="fa fa-leaf fa-2x mb-3 text-primary"></i></div>
+                              <h2 class="font-weight-light gs_reveal">Why did we make it?</h2>
+                              <p class="font-italic text-muted mb-4 gs_reveal">We made it to both improve our coding skills and understanding, and to create something that's fun!</p><a href="#" class="btn btn-light px-5 rounded-pill shadow-sm gs_reveal">Learn More</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="bs-dark2 py-5">
+                        <div class="container py-5">
+                          <div class="row mb-4">
+                            <div class="col-lg-5">
+                              <h2 class="display-4 font-weight-light gs_reveal gs_reveal_fromLeft">Our team</h2>
+                              <p class="font-italic text-muted gs_reveal">A team of cool people doing cool things</p>
+                            </div>
+                          </div>
+
+                          <!-- Team -->
+
+                  <section id="team" class="pb-5 teams_section">
+                        <div class="row">
+                            <!-- Team member -->
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <div class="image-flip" >
+                                    <div class="mainflip flip-0">
+                                        <div class="frontside">
+                                            <div class="card">
+                                                <div class="card-body text-center">
+                                                    <p><img class=" img-fluid" src="https://cdn.discordapp.com/attachments/990085433281118228/996421010482024508/2c439ffb9db1456342af5a53f68c4a1c.jpg" alt="card image"></p>
+                                                    <h4 class="card-title">Jason</h4>
+                                                    <p class="card-text">I have no idea what I am doing
+.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="backside">
+                                            <div class="card">
+                                                <div class="card-body text-center mt-4">
+                                                    <h4 class="card-title">Team Lead</h4>
+                                                    <p class="card-text">This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.</p>
+                                                    <ul class="list-inline">
+                                                        <li class="list-inline-item">
+                                                            <a class="social-icon text-xs-center" target="_blank" href="https://github.com/Asonjay">
+                                                              <i class="fa-brands fa-github"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <a class="social-icon text-xs-center" target="_blank" href="https://www.instagram.com/amoy_himself/">
+                                                              <i class="fa-brands fa-instagram"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <a class="social-icon text-xs-center" target="_blank" href="https://www.warcraftlogs.com/character/us/illidan/amoyi#zone=28">
+                                                              <i class="fa-brands fa-battle-net"></i>                                                            
+                                                            </a>
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <a class="social-icon text-xs-center" target="_blank" href="https://discordapp.com/users/351093874208276492">
+                                                              <i class="fa-brands fa-discord"></i>                                                            
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ./Team member -->
+                            <!-- Team member -->
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                              <div class="image-flip" >
+                                  <div class="mainflip flip-0">
+                                      <div class="frontside">
+                                          <div class="card">
+                                              <div class="card-body text-center">
+                                                  <p><img class=" img-fluid" src="https://cdn.discordapp.com/attachments/816440604723904564/996429197880868914/unknown.png" alt="card image"></p>
+                                                  <h4 class="card-title">Joshua</h4>
+                                                  <p class="card-text">Josh's Description.txt</p>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="backside">
+                                          <div class="card">
+                                              <div class="card-body text-center mt-4">
+                                                  <h4 class="card-title">Front End</h4>
+                                                  <p class="card-text">This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.</p>
+                                                  <ul class="list-inline">
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://github.com/JoshTheMan34">
+                                                            <i class="fa-brands fa-github"></i>
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://www.instagram.com/joshua_fugate_/">
+                                                            <i class="fa-brands fa-instagram"></i>
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://steamcommunity.com/id/legomasteroogway/">
+                                                            <i class="fa-brands fa-steam"></i>                                                      
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://discordapp.com/users/386321286017843200">
+                                                            <i class="fa-brands fa-discord"></i>                                                            
+                                                          </a>
+                                                      </li>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- ./Team member -->
+                            <!-- Team member -->
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                              <div class="image-flip" >
+                                  <div class="mainflip flip-0">
+                                      <div class="frontside">
+                                          <div class="card">
+                                              <div class="card-body text-center">
+                                                  <p><img class=" img-fluid" src="https://cdn.discordapp.com/attachments/816440604723904564/996428210218746017/Blurry_pika.jpg" alt="card image"></p>
+                                                  <h4 class="card-title">Tyler</h4>
+                                                  <p class="card-text">Very cool and smart and funny and awesome and cool and smart? .</p>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="backside">
+                                          <div class="card">
+                                              <div class="card-body text-center mt-4">
+                                                  <h4 class="card-title">Front End</h4>
+                                                  <p class="card-text">~Tyler~ A further step in the evolutionary chain, it is much more powerful than "Amazement" monsters you control..</p>
+                                                  <ul class="list-inline">
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://github.com/TyStredrick">
+                                                            <i class="fa-brands fa-github"></i>
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://www.instagram.com/tyler_s_72/">
+                                                            <i class="fa-brands fa-instagram"></i>
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://steamcommunity.com/profiles/76561199102554528">
+                                                            <i class="fa-brands fa-steam"></i>
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://discordapp.com/users/452579389436198923">
+                                                            <i class="fa-brands fa-discord"></i>                                                            
+                                                          </a>
+                                                      </li>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- ./Team member -->
+                            <!-- Team member -->
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                              <div class="image-flip" >
+                                  <div class="mainflip flip-0">
+                                      <div class="frontside">
+                                          <div class="card">
+                                              <div class="card-body text-center">
+                                                  <p><img class=" img-fluid" src="https://cdn.discordapp.com/attachments/816440604723904564/996426601266946088/drew3.jpg" alt="card image"></p>
+                                                  <h4 class="card-title">Drew</h4>
+                                                  <p class="card-text">I do lots of pro-gaming and also programming and I am a race in yu-gi-oh
+</p>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="backside">
+                                          <div class="card">
+                                              <div class="card-body text-center mt-4">
+                                                  <h4 class="card-title">Back End</h4>
+                                                  <p class="card-text">~Drew~ A new form of the enigmatic Blademaster adds a Ritual Spellcaster attacks with a different name from the surrounding sea to your Critics..</p>
+                                                  <ul class="list-inline">
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://www.reddit.com/user/Cobble8">
+                                                            <i class="fa-brands fa-reddit-alien"></i>
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
+                                                            <i class="fa-brands fa-instagram"></i>
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://steamcommunity.com/profiles/76561198863337692/">
+                                                            <i class="fa-brands fa-steam"></i>                                                      
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://discordapp.com/users/400571355193671681">
+                                                            <i class="fa-brands fa-discord"></i>                                                            
+                                                          </a>
+                                                      </li>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- ./Team member -->
+                            <!-- Team member -->
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                              <div class="image-flip" >
+                                  <div class="mainflip flip-0">
+                                      <div class="frontside">
+                                          <div class="card">
+                                              <div class="card-body text-center">
+                                                  <p><img class=" img-fluid" src="https://cdn.discordapp.com/attachments/938301846555078656/996436968265228359/unknown.png" alt="card image"></p>
+                                                  <h4 class="card-title">Vedant</h4>
+                                                  <p class="card-text">I am the NLP EST Batch B 1st Kahoot gold medalist.</p>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="backside">
+                                          <div class="card">
+                                              <div class="card-body text-center mt-4">
+                                                  <h4 class="card-title">Back End</h4>
+                                                  <p class="card-text">~Vedant~ A snow wolf that's beautiful to the eye, but absolutely vicious in battle..</p>
+                                                  <ul class="list-inline">
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://account.venmo.com/u/Vedantn">
+                                                            <i class="fa-solid fa-money-bill-wave"></i>
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://www.instagram.com/vedant42_/">
+                                                            <i class="fa-brands fa-instagram"></i>
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://www.snapchat.com/add/vedantn_42">
+                                                            <i class="fa-brands fa-snapchat"></i>                                                      
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://discordapp.com/users/975927983493763145">
+                                                            <i class="fa-brands fa-discord"></i>                                                            
+                                                          </a>
+                                                      </li>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- ./Team member -->
+                            <!-- Team member -->
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                              <div class="image-flip" >
+                                  <div class="mainflip flip-0">
+                                      <div class="frontside">
+                                          <div class="card">
+                                              <div class="card-body text-center">
+                                                  <p><img class=" img-fluid" src="https://cdn.discordapp.com/attachments/938301846555078656/996433937951903824/unknown.png" alt="card image"></p>
+                                                  <h4 class="card-title">Hudson</h4>
+                                                  <p class="card-text">I 100 percent without a doubt know what i am doing 👍</p>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="backside">
+                                          <div class="card">
+                                              <div class="card-body text-center mt-4">
+                                                  <h4 class="card-title">Back End</h4>
+                                                  <p class="card-text">~Hudson~ A crimson dragon born from magma, it attacks
+with a magma punch..</p>
+                                                  <ul class="list-inline">
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
+                                                            <i class="fa-brands fa-github"></i>
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
+                                                            <i class="fa-brands fa-instagram"></i>
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
+                                                            <i class="fa-brands fa-steam"></i>                                                      
+                                                          </a>
+                                                      </li>
+                                                      <li class="list-inline-item">
+                                                          <a class="social-icon text-xs-center" target="_blank" href="discordapp.com/users/482289005111672833">
+                                                            <i class="fa-brands fa-discord"></i>                                                            
+                                                          </a>
+                                                      </li>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- ./Team member -->
+                        </div>
+                  </section>
+                 </div>
+                </div>
+                </main>
+  
+                <footer class="py-4 bg-dark mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2022</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    
+
+
+        <script>
+          //// Scroll Trigger ////
+
+          function animateFrom(elem, direction) {
+            direction = direction || 1;
+            var x = 0,
+                y = direction * 100;
+            if(elem.classList.contains("gs_reveal_fromLeft")) {
+                x = -100;
+                y = 0;
+            } else if (elem.classList.contains("gs_reveal_fromRight")) {
+                x = 100;
+                y = 0;
+            }
+            elem.style.transform = "translate(" + x + "px, " + y + "px)";
+            elem.style.opacity = "0";
+            gsap.fromTo(elem, {x: x, y: y, autoAlpha: 0}, {
+                duration: 1.25, 
+                x: 0,
+                y: 0, 
+                autoAlpha: 1, 
+                ease: "expo", 
+                overwrite: "auto"
+            });
+            }
+
+            function hide(elem) {
+            gsap.set(elem, {autoAlpha: 0});
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.utils.toArray(".gs_reveal").forEach(function(elem) {
+                hide(elem); // assure that the element is hidden when scrolled into view
+
+                ScrollTrigger.create({
+                trigger: elem,
+                onEnter: function() { animateFrom(elem) }, 
+                onEnterBack: function() { animateFrom(elem, -1) },
+                onLeave: function() { hide(elem) } // assure that the element is hidden when scrolled into view
+                });
+            });
+            });
+
+          //// Scroll Trigger End ////
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollTrigger.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="{{url_for('static',filename='/js/scripts.js')}}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="assets/demo/chart-area-demo.js"></script>
+        <script src="assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+        <script src="js/datatables-simple-demo.js"></script>
+    </body>
+</html>
