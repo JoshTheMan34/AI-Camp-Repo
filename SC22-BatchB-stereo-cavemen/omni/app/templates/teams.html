@@ -12,9 +12,12 @@
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     </head>
   <body class="sb-nav-fixed teams_body">
+      <div class="progress-wrap ">
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102"><path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" /></svg>
+      </div>
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
       <!-- Navbar Brand-->
-      <a class="navbar-brand ps-3" href="{{url_for('home')}}">Home</a> 
+      <a href="{{url_for('home')}}"><img class="navbar-brand ps-3" id="yu-gi-oh_logo" src= "https://raw.githubusercontent.com/Asonjay/AI-Camp-Repo/main/SC22-BatchB-stereo-cavemen/cropped_imgs/icons/Yu-Gi-Oh!.png"></a>
       <!-- Sidebar Toggle-->
       <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
       href="#!" id="sidebarToggle"><i class="fas fa-bars"></i></button> 
@@ -27,17 +30,7 @@
             </form>
             -->
             <!-- Navbar-->
-            <ul class="navbar-nav ms-auto me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">IDK</a></li>
-                        <li><a class="dropdown-item" href="#!">TEXT</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">figure this out</a></li>
-                    </ul>
-                </li>
-            </ul>
+           
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -64,9 +57,6 @@
                             </a>
                         </div>
                     </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small"></div>
-                    </div>
                 </nav>
             </div>
             <!--Navbar End-->
@@ -79,7 +69,7 @@
                           <div class="row h-100 align-items-center py-5">
                             <div class="col-lg-6">
                               <h1 class="display-4 gs_reveal">About us </h1>
-                              <p class="lead text-muted mb-0 gs_reveal">We are a small team of 6 people creating an AI related website.</p>
+                              <p class="lead text-muted mb-0 gs_reveal">We are a small team of 6 people that spent 3 weeks creating a fun and informative AI related website.</p>
                             </div>
                             <div class="col-lg-6 d-none d-lg-block gs_reveal gs_reveal_fromRight"><img src="{{url_for('static',filename='/img/Team meeting_Isometric.png')}}" alt="" class="img-fluid"></div>
                           </div>
@@ -90,16 +80,17 @@
                         <div class="container py-5">
                           <div class="row align-items-center mb-5">
                             <div class="col-lg-6 order-2 order-lg-1"><div class="gs_reveal gs_reveal_fromLeft"><i class="fa fa-bar-chart fa-2x mb-3 text-primary"></i></div>
-                              <h2 class="font-weight-light gs_reveal">How long did we have to make it</h2>
-                              <p class="font-italic text-muted mb-4 gs_reveal">Because of the limited time constraints we had, we completed everything in under 3 weeks.</p><a href="#" class="btn btn-light px-5 rounded-pill shadow-sm gs_reveal">Learn More</a>
+                              <h2 class="font-weight-light gs_reveal">Week 1-2</h2>
+                              <p class="font-italic text-muted mb-4 gs_reveal">For the first two weeks, Tyler, Joshua, and Hudson worked on data processing, while Drew, Vedant, and Jason created the model that would be used later on. The Data Processing team worked on finding usable data and processing it into a form the Ai could use. The Model Creation team's focus was creating the framework of the AI, and training it once they had the data from the other team. By the middle of week 2, we had already started creating the website and generating cards.</p>
                             </div>
-                            <div class="col-lg-5 px-5 mx-auto order-1 order-lg-2 gs_reveal gs_reveal_fromRight"><img src="{{url_for('static',filename='/img/Coding _Outline.png')}}" alt="" class="img-fluid mb-4 mb-lg-0"></div>
+                            <div class="col-lg-6 px-5 mx-auto order-1 order-lg-2 gs_reveal gs_reveal_fromRight"><img src="{{url_for('static',filename='/img/Coding _Outline.png')}}" alt="" class="img-fluid mb-4 mb-lg-0"></div>
                           </div>
                           <div class="row align-items-center">
-                            <div class="col-lg-5 px-5 mx-auto gs_reveal gs_reveal_fromLeft"><img src="{{url_for('static',filename='/img/Online presentation_Monochromatic.png')}}" alt="" class="img-fluid mb-4 mb-lg-0"></div>
+                            <div class="col-lg-6 px-5 mx-auto gs_reveal gs_reveal_fromLeft"><img src="{{url_for('static',filename='/img/Online presentation_Monochromatic.png')}}" alt="" class="img-fluid mb-4 mb-lg-0" id="img-1-fixed"></div>
                             <div class="col-lg-6"><div class="gs_reveal gs_reveal_fromRight"><i class="fa fa-leaf fa-2x mb-3 text-primary"></i></div>
-                              <h2 class="font-weight-light gs_reveal">Why did we make it?</h2>
-                              <p class="font-italic text-muted mb-4 gs_reveal">We made it to both improve our coding skills and understanding, and to create something that's fun!</p><a href="#" class="btn btn-light px-5 rounded-pill shadow-sm gs_reveal">Learn More</a>
+                              <h2 class="font-weight-light gs_reveal">Week 3                              </h2>
+                                <p class="font-italic text-muted mb-4 gs_reveal">Week 3 was all about website creation. At the beginning of the week, we split up into front-end and back-end teams to work more efficiently. The front-end team consisted of Vedant, Tyler, and Joshua, and they worked to make the presentation of the website visually appealing and made sure the website was user-friendly. Both teams worked in close conjunction to one another, and our teamwork made the project much easier.</p>
+
                             </div>
                           </div>
                         </div>
@@ -109,8 +100,8 @@
                         <div class="container py-5">
                           <div class="row mb-4">
                             <div class="col-lg-5">
-                              <h2 class="display-4 font-weight-light gs_reveal gs_reveal_fromLeft">Our team</h2>
-                              <p class="font-italic text-muted gs_reveal">A team of cool people doing cool things</p>
+                              <h2 class="display-4 font-weight-light gs_reveal gs_reveal_fromLeft" id="Our_Team_Text">Our Team:</h2>
+                              <p class="font-italic text-muted gs_reveal" id="Our_Team_Text">A team of cool people doing cool things</p>
                             </div>
                           </div>
 
@@ -127,7 +118,7 @@
                                                 <div class="card-body text-center">
                                                     <p><img class=" img-fluid" src="https://cdn.discordapp.com/attachments/990085433281118228/996421010482024508/2c439ffb9db1456342af5a53f68c4a1c.jpg" alt="card image"></p>
                                                     <h4 class="card-title">Jason</h4>
-                                                    <p class="card-text">I have no idea what I am doing
+                                                    <p class="card-text">I have no idea what I am doing.
 .</p>
                                                 </div>
                                             </div>
@@ -135,8 +126,8 @@
                                         <div class="backside">
                                             <div class="card">
                                                 <div class="card-body text-center mt-4">
-                                                    <h4 class="card-title">Team Lead</h4>
-                                                    <p class="card-text">This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.</p>
+                                                    <h4 class="card-title">Team Leader</h4>
+                                                    <p class="card-text">~Jason~ A Space Mambo floating in the vast universe. This living relic was found in the ruins of a super civilization on Alphard 4</p>
                                                     <ul class="list-inline">
                                                         <li class="list-inline-item">
                                                             <a class="social-icon text-xs-center" target="_blank" href="https://github.com/Asonjay">
@@ -150,7 +141,7 @@
                                                         </li>
                                                         <li class="list-inline-item">
                                                             <a class="social-icon text-xs-center" target="_blank" href="https://www.warcraftlogs.com/character/us/illidan/amoyi#zone=28">
-                                                              <i class="fa-brands fa-battle-net"></i>                                                            
+                                                              <i class="fa-brands fa-battle-net"></i>
                                                             </a>
                                                         </li>
                                                         <li class="list-inline-item">
@@ -183,7 +174,7 @@
                                           <div class="card">
                                               <div class="card-body text-center mt-4">
                                                   <h4 class="card-title">Front End</h4>
-                                                  <p class="card-text">This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.</p>
+                                                  <p class="card-text">~Joahua~ A jet-powered hawk that travels at the speed of sound.</p>
                                                   <ul class="list-inline">
                                                       <li class="list-inline-item">
                                                           <a class="social-icon text-xs-center" target="_blank" href="https://github.com/JoshTheMan34">
@@ -222,7 +213,7 @@
                                               <div class="card-body text-center">
                                                   <p><img class=" img-fluid" src="https://cdn.discordapp.com/attachments/816440604723904564/996428210218746017/Blurry_pika.jpg" alt="card image"></p>
                                                   <h4 class="card-title">Tyler</h4>
-                                                  <p class="card-text">Very cool and smart and funny and awesome and cool and smart? .</p>
+                                                  <p class="card-text">Very cool and smart and funny and awesome and cool and smart?</p>
                                               </div>
                                           </div>
                                       </div>
@@ -267,9 +258,9 @@
                                       <div class="frontside">
                                           <div class="card">
                                               <div class="card-body text-center">
-                                                  <p><img class=" img-fluid" src="https://cdn.discordapp.com/attachments/816440604723904564/996426601266946088/drew3.jpg" alt="card image"></p>
+                                                  <p><img class="img-fluid" src="https://cdn.discordapp.com/attachments/990085433281118228/996421514620571678/20220712_102249.jpg?size=1024" alt="card image"></p>
                                                   <h4 class="card-title">Drew</h4>
-                                                  <p class="card-text">I do lots of pro-gaming and also programming and I am a race in yu-gi-oh
+                                                  <p class="card-text">I do lots of pro-gaming and also programming and I am a race in yu-gi-oh.
 </p>
                                               </div>
                                           </div>
@@ -286,8 +277,8 @@
                                                           </a>
                                                       </li>
                                                       <li class="list-inline-item">
-                                                          <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
-                                                            <i class="fa-brands fa-instagram"></i>
+                                                          <a class="social-icon text-xs-center" target="_blank" href="https://discordapp.com/users/400571355193671681">
+                                                            <i class="fa-brands fa-discord"></i>
                                                           </a>
                                                       </li>
                                                       <li class="list-inline-item">
@@ -295,11 +286,7 @@
                                                             <i class="fa-brands fa-steam"></i>                                                      
                                                           </a>
                                                       </li>
-                                                      <li class="list-inline-item">
-                                                          <a class="social-icon text-xs-center" target="_blank" href="https://discordapp.com/users/400571355193671681">
-                                                            <i class="fa-brands fa-discord"></i>                                                            
-                                                          </a>
-                                                      </li>
+
                                                   </ul>
                                               </div>
                                           </div>
@@ -317,14 +304,14 @@
                                               <div class="card-body text-center">
                                                   <p><img class=" img-fluid" src="https://cdn.discordapp.com/attachments/938301846555078656/996436968265228359/unknown.png" alt="card image"></p>
                                                   <h4 class="card-title">Vedant</h4>
-                                                  <p class="card-text">I am the NLP EST Batch B 1st Kahoot gold medalist.</p>
+                                                  <p class="card-text">Goats are like mushrooms, because if you shoot a duck I'm afraid of toasters.</p>
                                               </div>
                                           </div>
                                       </div>
                                       <div class="backside">
                                           <div class="card">
                                               <div class="card-body text-center mt-4">
-                                                  <h4 class="card-title">Back End</h4>
+                                                  <h4 class="card-title">Front End</h4>
                                                   <p class="card-text">~Vedant~ A snow wolf that's beautiful to the eye, but absolutely vicious in battle..</p>
                                                   <ul class="list-inline">
                                                       <li class="list-inline-item">
@@ -408,19 +395,68 @@ with a magma punch..</p>
                  </div>
                 </div>
                 </main>
-  
-                <footer class="py-4 bg-dark mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2022</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
+                <section class="footer">
+                                  <svg style="background-color: var(--bs-dark2)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="var(--ai-background)" fill-opacity="1" d="M0,192L48,208C96,224,192,256,288,250.7C384,245,480,203,576,170.7C672,139,768,117,864,122.7C960,128,1056,160,1152,176C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+                    <footer id="footer" class="footer-1">
+                      <div class="main-footer widgets-dark typo-light">
+                        <div class="container">
+                          <div class="row">
+                              
+                            <div class="col-xs-12 col-sm-6 col-md-3">
+                              <div class="widget subscribe no-box">
+                                <h5 class="widget-title">Andrew<span></span></h5>
+                                <p>Our model Andrew uses our filtered data of every Yu-Gi-Oh card to generate a completely random card which can be used in a real Yu-Gi-Oh match!</p>
+                              </div>
                             </div>
+                            
+                            <div class="col-xs-12 col-sm-6 col-md-3">
+                              <div class="widget no-box">
+                                <h5 class="widget-title">Quick Links<span></span></h5>
+                                <ul class="thumbnail-widget">
+                                  <li>
+                                    <div class="thumb-content"><a href="cardgen">Card Generator</a></div> 
+                                  </li>
+                                  <li>
+                                    <div class="thumb-content"><a href="cardbattle">Card Battle</a></div> 
+                                  </li>
+                                  <li>
+                                    <div class="thumb-content"><a href="howitworks">How it works</a></div> 
+                                  </li>
+                                  <li>
+                                    <div class="thumb-content"><a href="teams">The Team</a></div> 
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            
+                            <div class="col-xs-12 col-sm-6 col-md-3">
+                              <div class="widget no-box">
+                                <h5 class="widget-title">Our Location<span></span></h5>
+                                <p>
+                                  2627 Hanover Street,
+                                  Palo Alto, CA 94304
+                                </p>
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.787995409601!2d-122.1482376!3d37.4184856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fbaebb9b9babf%3A0x5b965ba9a0e103b3!2s2627%20Hanover%20St%2C%20Palo%20Alto%2C%20CA%2094304!5e0!3m2!1sen!2sus!4v1657723454321!5m2!1sen!2sus" width="200" height="150" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                              </div>
+                            </div>
+                            
+                            <div class="col-xs-12 col-sm-6 col-md-3">
+                              
+                              <div class="widget no-box">
+                                <h5 class="widget-title">Contact Us<span></span></h5>
+                                <a href="mailto:hello@ai-camp.org"><p>hello@ai-camp.org</p></a>
+                                <a href="tel:6504364477"><p>(650) 436-4477</p></a>
+                                <br>
+                                <ul class="social-footer2">
+                                  <li class=""><a href="https://www.instagram.com/aicamp1/" target="_blank" title="Facebook"><i class="fa-brands fa-instagram" style="height: 30px; width: 30px;"></i></a></li>
+                                </ul>
+                              </div>
+                            </div>                
+                          </div>
                         </div>
-                    </div>
-                </footer>
+                      </div>                      
+                    </footer>
+                  </section>
             </div>
         </div>
     
@@ -476,12 +512,10 @@ with a magma punch..</p>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollTrigger.min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="{{url_for('static',filename='/js/scripts.js')}}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/chart-area-demo.js"></script>
-        <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
     </body>
 </html>

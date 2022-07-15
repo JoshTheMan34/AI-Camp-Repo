@@ -1,3 +1,61 @@
+
+
+        (function($) { "use strict";
+
+        //Switch dark/light
+        
+        $(".switch").on('click', function () {
+            if ($("body").hasClass("light")) {
+                $("body").removeClass("light");
+                $(".switch").removeClass("switched");
+            }
+            else {
+                $("body").addClass("light");
+                $(".switch").addClass("switched");
+            }
+        });
+            
+        $(document).ready(function(){"use strict";
+        
+            //Scroll back to top
+            
+            var progressPath = document.querySelector('.progress-wrap path');
+            var pathLength = progressPath.getTotalLength();
+            progressPath.style.transition = progressPath.style.WebkitTransition = 'none';
+            progressPath.style.strokeDasharray = pathLength + ' ' + pathLength;
+            progressPath.style.strokeDashoffset = pathLength;
+            progressPath.getBoundingClientRect();
+            progressPath.style.transition = progressPath.style.WebkitTransition = 'stroke-dashoffset 10ms linear';		
+            var updateProgress = function () {
+                var scroll = $(window).scrollTop();
+                var height = $(document).height() - $(window).height();
+                var progress = pathLength - (scroll * pathLength / height);
+                progressPath.style.strokeDashoffset = progress;
+            }
+            updateProgress();
+            $(window).scroll(updateProgress);	
+            var offset = 50;
+            var duration = 550;
+            jQuery(window).on('scroll', function() {
+                if (jQuery(this).scrollTop() > offset) {
+                    jQuery('.progress-wrap').addClass('active-progress');
+                } else {
+                    jQuery('.progress-wrap').removeClass('active-progress');
+                }
+            });				
+            jQuery('.progress-wrap').on('click', function(event) {
+                event.preventDefault();
+                jQuery('html, body').animate({scrollTop: 0}, duration);
+                return false;
+            })
+            
+            
+        });
+        
+    })(jQuery);
+
+
+
 /*!
     * Start Bootstrap - SB Admin v7.0.5 (https://startbootstrap.com/template/sb-admin)
     * Copyright 2013-2022 Start Bootstrap
@@ -60,269 +118,365 @@ $(document).ready(function(){
     });
 });
 
-// Yu-Gi-Oh Cards on Homepage //
 
-/*
+/*****************************************/
+/*****************************************/
+/*****************************************/
+/*****************************************/
+/*****************************************/
+/********* Card battle *******************/
 
-  using 
-    - an animated gif of sparkles.
-    - an animated gradient as a holo effect.
-    - color-dodge mix blend mode
+const randomBetween = (a, b) => Math.trunc(Math.random() * b) + a;
+
+const shuffleArray = array => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+};
+
+// const emojis = new Map();
+// emojis.set('Fire', '🔥');
+// emojis.set('Grass', '🍃');
+// emojis.set('Water', '💦');
+// emojis.set('Fairy', '🌟');
+// emojis.set('Psychic', '👁‍🗨');
+// emojis.set('Electric', '⚡');
+// emojis.set('Fighting', '🥊');
+
+const setWinner = function (playerCard, computerCard) {
+  if (playerCard.atk === computerCard.def) {
+  }
+  // WINNING
+  else if (playerCard.atk > computerCard.def) {
+    console.log
+    myScore++;
+  }
+  // LOSING
+  else if (playerCard.atk < computerCard.def) {
+    comScore++;
+  }
+};
+
+
+const root = document.documentElement;
+const rootVariables = getComputedStyle(root);
+
+const playerCardsEls = document.querySelectorAll('.card--player');
+const computerCardsEls = document.querySelectorAll('.card--computer');
+const firstBattleCard = document.querySelectorAll('.card--battle')[0];
+const secondBattleCard = document.querySelectorAll('.card--battle')[1];
+const playerYugiohInfo = document.querySelector('.player-yugioh');
+const computerYugiohInfo = document.querySelector('.computer-yugioh');
+const winner = document.querySelector('.winner');
+const result = document.querySelector('.result');
+const playAgain = document.querySelector('.play-again');
+
+const gameResult = document.querySelector('.game-over');
+
+
+
+const score0 = document.querySelector('#score--0');
+const score1 = document.querySelector('#score--1');
+
+var myScore = 0;
+var comScore = 0;
+
+const tops = [];
+const topsComputer = [];
+
+const length = 100;
+
+const firstTop = 0;
+const lastTop = -128;
+
+const firstTopComputer = 0;
+const lastTopComputer = 128.5;
+
+const handLength = 5;
+const indexesOfComputerCards = [0, 1, 2, 3, 4];
+
+var imgUrls = [];
+var YugiohNames = [];
+var YugiohAtk = [];
+var YugiohDef = [];
+
+var Yugiohs = [];
+
+let computerYugioh;
+let randomIndex;
+let YugiohsForComputer;
+
+let zIndexForNextPlayedCards = 0;
+
+let cardsPlayed = 0;
+
+class Yugioh {
+  constructor(src, name, atk, def) {
+    this.src = src;
+    this.name = name;
+    this.atk = atk;
+    this.def = def;
+  }
+}
+
+
+const setUrlsForPlayerCards = function () {
+  for (let i = 0; i < playerCardsEls.length; i++) {
+    playerCardsEls[i].children[0].setAttribute("src", Yugiohs[i].src);
+  }
+};
+
+
+const randomizeYugiohForComputer = function () {
+  computerYugioh = YugiohsForComputer[YugiohsForComputer.length - 1];
+  YugiohsForComputer.pop();
+};
+
+const defineTopsForAnimation = function (top, first, last) {
+  const step = (first - last) / (length - 1);
+
+  for (let i = 0; i < length; i++) {
+    top[i] = `${first - step * i}%`;
+  }
+};
+
+const setTop = function (card, player) {
+  defineTopsForAnimation(tops, firstTop, lastTop);
+  defineTopsForAnimation(topsComputer, firstTopComputer, lastTopComputer);
+
+  let i = 0;
+  let time = 5;
+
+  let interval = setInterval(function () {
+    card.style.top = player ? tops[i] : topsComputer[i];
+    i++;
+  }, time);
+
+  setTimeout(function () {
+    clearInterval(interval);
+  }, length * time);
+};
+
+const moveCard = function (card, player) {
+  const left = player ? '0' : '-32rem';
+  card.style.left = left;
+
+  if (!player) {
+    card.children[0].src = computerYugioh.src;
+  }
+
+  card.style.pointerEvents = 'none';
+  card.style.transform = `rotate(0deg)`;
+  card.style.zIndex = zIndexForNextPlayedCards;
+  zIndexForNextPlayedCards++;
+
+  setTop(card, player);
+};
+
+const computerPlaysYugioh = function (src) {
+  randomizeYugiohForComputer();
+  moveCard(computerCardsEls[indexesOfComputerCards[indexesOfComputerCards.length - 1]], false);
+  indexesOfComputerCards.pop();
+};
+
+const setInfoAboutWinner = function (myYugioh, computerYugioh) {
+  result.textContent = `🗡️:${myYugioh.atk} 🆚 🛡️${computerYugioh.def}`;
+  if (comScore === myScore) {
+    winner.textContent = "It's a draw!";
+  } else if (myScore > comScore) {
+    winner.textContent = 'You win!';
+  } else {
+    winner.textContent = 'You lose!';
+  }
+  if (cardsPlayed === handLength) {
+    playAgain.textContent = "Click to Play Again!"
+  }
   
-*/
-var x;
-var $cards = $(".card");
-var $style = $(".hover");
+};
 
-$cards
-  .on("mousemove touchmove", function(e) { 
-    // normalise touch/mouse
-    var pos = [e.offsetX,e.offsetY];
-    e.preventDefault();
-    if ( e.type === "touchmove" ) {
-      pos = [ e.touches[0].clientX, e.touches[0].clientY ];
+const setInfoAboutBattle = function (myYugioh, computerYugioh) {
+  playerYugiohInfo.textContent = myYugioh.name;
+  computerYugiohInfo.textContent = computerYugioh.name;
+
+//   playerYugiohInfo.textContent += emojis.get(myYugioh.type);
+//   computerYugiohInfo.textContent += emojis.get(computerYugioh.type);
+};
+
+const setInfo = function (myYugioh, computerYugioh, youWin) {
+  setInfoAboutBattle(myYugioh, computerYugioh);
+  setInfoAboutWinner(myYugioh, computerYugioh, youWin);
+};
+
+const increaseScore = function () {
+  console.log(myScore)
+  score0.textContent = comScore;
+  score1.textContent = myScore;
+};
+
+const fight = function (myYugioh) {
+//   console.log(myYugioh)
+//   console.log(computerYugioh)
+  
+  setWinner(myYugioh, computerYugioh);
+  
+  setTimeout(setInfo, 500, myYugioh, computerYugioh);
+
+  increaseScore();
+};
+
+/****************
+ * Game Mechanism
+ ****************/
+const checkIfGameEnded = function () {
+  setTimeout(function () {
+    if (cardsPlayed === handLength) {
+      if (myScore > comScore) {
+        gameResult.textContent = '🏆You won!🏆';
+        document.body.style.backgroundColor = '#dbfdc0';
+      } else if (comScore > myScore) {
+        gameResult.textContent = '😢You lost!😢';
+        document.body.style.backgroundColor = '#faa2a2';
+      } else {
+        gameResult.textContent = "🤝It's a draw!🤝";
+        document.body.style.backgroundColor = '#c2c2c2';
+      }
+      
     }
-    var $card = $(this);
-    // math for mouse position
-    var l = pos[0];
-    var t = pos[1];
-    var h = $card.height();
-    var w = $card.width();
-    var px = Math.abs(Math.floor(100 / w * l)-100);
-    var py = Math.abs(Math.floor(100 / h * t)-100);
-    var pa = (50-px)+(50-py);
-    // math for gradient / background positions
-    var lp = (50+(px - 50)/1.5);
-    var tp = (50+(py - 50)/1.5);
-    var px_spark = (50+(px - 50)/7);
-    var py_spark = (50+(py - 50)/7);
-    var p_opc = 20+(Math.abs(pa)*1.5);
-    var ty = ((tp - 50)/2) * -1;
-    var tx = ((lp - 50)/1.5) * .5;
-    // css to apply for active card
-    var grad_pos = `background-position: ${lp}% ${tp}%;`
-    var sprk_pos = `background-position: ${px_spark}% ${py_spark}%;`
-    var opc = `opacity: ${p_opc/100};`
-    var tf = `transform: rotateX(${ty}deg) rotateY(${tx}deg)`
-    // need to use a <style> tag for psuedo elements
-    var style = `
-      .card:hover:before { ${grad_pos} }  /* gradient */
-      .card:hover:after { ${sprk_pos} ${opc} }   /* sparkles */ 
-    `
-    // set / apply css class and style
-    $cards.removeClass("active");
-    $card.removeClass("animated");
-    $card.attr( "style", tf );
-    $style.html(style);
-    if ( e.type === "touchmove" ) {
-      return false; 
-    }
-    clearTimeout(x);
-  }).on("mouseout touchend touchcancel", function() {
-    // remove css, apply custom animation on end
-    var $card = $(this);
-    $style.html("");
-    $card.removeAttr("style");
-    x = setTimeout(function() {
-      $card.addClass("animated");
-    },2500);
+  }, 2000);
+};
+
+const playYugioh = function (card) {
+  const src = Yugiohs[card.id].src;
+  const YugiohName = Yugiohs[card.id].name;
+  const YugiohAtk = Yugiohs[card.id].atk;
+  const YugiohDef = Yugiohs[card.id].def;
+
+  const myYugioh = new Yugioh(src, YugiohName, YugiohAtk, YugiohDef);
+
+  moveCard(card, true); // true - move player's card
+  computerPlaysYugioh(src);
+  fight(myYugioh);
+
+  cardsPlayed++;
+  checkIfGameEnded();
+};
+
+const addEventListenersToPlayerCards = function () {
+  playerCardsEls.forEach(card => {
+    card.addEventListener('click', function () {
+      playYugioh(this);
+    });
   });
+};
 
+/********************** DEFINE ********************/
+const defineYugiohs = function () {
+  // Loading card info
+  //defineImgUrlsAndNames();
 
+//   for (let i = 0; i < YugiohNames.length; i++) {
+//     Yugiohs.push(new Yugioh(imgUrls[i], YugiohNames[i], YugiohAtk[i], YugiohDef[i]));
+//   }
+   fetch('./return_json')
+        .then(response => response.json())
+        .then(data => {
+            //console.log(data);
+            imgUrls.length = 0;
+            YugiohNames.length = 0;
+            YugiohAtk.length = 0;
+            YugiohDef.length = 0;
+            Yugiohs.length = 0;
+            for (const timestamp in data) {
+                //console.log(data[timestamp]);
+                imgUrls.push(data[timestamp]['url']);
+                YugiohNames.push(data[timestamp]['name']);
+                YugiohAtk.push(data[timestamp]['attack']);
+                YugiohDef.push(data[timestamp]['defense']);
+                Yugiohs.push(new Yugioh(data[timestamp]['url'], data[timestamp]['name'], data[timestamp]['attack'], data[timestamp]['defense']));
+            }
+            //console.log(Yugiohs);
 
+            shuffleArray(indexesOfComputerCards);
 
-    gsap.registerPlugin(ScrollTrigger);
+            shuffleArray(Yugiohs);
 
-        const pageContainer = document.querySelector(".container1");
+            YugiohsForComputer = [...Yugiohs];
 
-        /* SMOOTH SCROLL */
-        const scroller = new LocomotiveScroll({
-        el: pageContainer,
-        smooth: true
-        });
+            shuffleArray(YugiohsForComputer);
 
-        scroller.on("scroll", ScrollTrigger.update);
+            setUrlsForPlayerCards();
 
-        ScrollTrigger.scrollerProxy(pageContainer, {
-        scrollTop(value) {
-            return arguments.length
-            ? scroller.scrollTo(value, 0, 0)
-            : scroller.scroll.instance.scroll.y;
-        },
-        getBoundingClientRect() {
-            return {
-            left: 0,
-            top: 0,
-            width: window.innerWidth,
-            height: window.innerHeight
-            };
-        },
-        pinType: pageContainer.style.transform ? "transform" : "fixed"
-        });
-
-        ////////////////////////////////////
-        ////////////////////////////////////
-        window.addEventListener("load", function () {
-        let pinBoxes = document.querySelectorAll(".pin-wrap > *");
-        let pinWrap = document.querySelector(".pin-wrap");
-        let pinWrapWidth = pinWrap.offsetWidth;
-        let horizontalScrollLength = pinWrapWidth - window.innerWidth;
-
-        // Pinning and horizontal scrolling
-
-        gsap.to(".pin-wrap", {
-            scrollTrigger: {
-            scroller: pageContainer, //locomotive-scroll
-            scrub: true,
-            trigger: "#sectionPin",
-            pin: true,
-            // anticipatePin: 1,
-            start: "top top",
-            end: pinWrapWidth
-            },
-            x: -horizontalScrollLength,
-            ease: "none"
-        });
-
-        ScrollTrigger.addEventListener("refresh", () => scroller.update()); //locomotive-scroll
-
-        ScrollTrigger.refresh();
-        });
-
-
-
-// Deck de cartas
-let cardCharmander = {
-    imagem: "https://lh3.googleusercontent.com/proxy/Ql2TynGXUp7TwvvRuGz-tM_fvVlbSdx5j9xCgLtezGd1BML9_6VW-TVEhGT9sluH_-pfnvjbZtDfHsQhEdjIAyBkW12SFIGJe7U3IFVZKvCUUw",
-    nome: "charmander",
-    atributos:{
-        tipo: "fogo",
-        ataque: 1600,
-        defesa: 500
-    }
-}
-let cardSquirtle = {
-    imagem: "http://static.pokemonpets.com/images/monsters-images-800-800/7-Squirtle.png",
-    nome: "Squirtle",
-    atributos:{
-        tipo: "Agua",
-        ataque: 1500,
-        defesa: 700
-    }
-}
-let cardBulbasaur = {
-    imagem: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png",
-    nome: "Bulbasaur",
-    atributos:{
-        tipo: "folha",
-        ataque: 1700,
-        defesa: 400
-    }
-}
-let cardPikachu = {
-    imagem: "dhttps://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png",
-    nome: "Pikachu",
-    atributos:{
-        tipo: "Eletrico",
-        ataque: 1800,
-        defesa: 550
-    }
-}
-let cardEevee = {
-    imagem: "e",
-    nome: "Eevee",
-    atributos:{
-        tipo: "normal",
-        ataque: 1500,
-        defesa: 500
-    }
-}
-
-var cartaJogador;
-var cartaBot;
-var deck = [cardCharmander, cardBulbasaur, cardEevee, cardSquirtle, cardPikachu]
-
-document.getElementById('bBatalhar').hidden = true
-document.getElementById('bResetar').hidden = true
-document.getElementById('jogador').hidden = true
-document.getElementById('bot').hidden = true
-
-function distribuirCartas(){
-    let nCartaBot = Math.floor(Math.random() * 5)
-    cartaBot = deck[nCartaBot]
-    console.log(`${nCartaBot} OK`)
-
-    let nCartaJogador = Math.floor(Math.random() * 5)
-    while (nCartaBot == nCartaJogador){
-        nCartaJogador =  Math.floor(Math.random() * 5)
-    }
-    cartaJogador = deck[nCartaJogador]
-    console.log(`${nCartaJogador} OK`)
-
-    // Botões e atributos
-    document.getElementById('bDistribuirCartas').disabled = true
-    document.getElementById('bBatalhar').disabled = false
-    document.getElementById('bBatalhar').hidden = false
-    document.getElementById('bResetar').hidden = false
-    document.getElementById('jogador').hidden = false
-
-    tAtributo.innerHTML = "Escolha o atributo para batalhar!"
-    escolha()
-    valorEscolha()
-    exibirCartaJogador()
-
-    console.log(cartaJogador)
-}
-function escolha(){
-    let opcoes = document.getElementById('atributos')
-    let opcoesTela = ""
-    for (var atributo in cartaJogador.atributos){
-        opcoesTela += `<input type="radio" name="atributo" id="opcoes" value="${atributo}"/>${atributo}`
-        opcoes.innerHTML = opcoesTela
-    }
-    console.log(`OK escolha`)
-}
-function valorEscolha(){
-    let radioAtributo = document.getElementsByName('atributo')
-    for(i = 0; i < radioAtributo.length; i++){
-        if(radioAtributo[i].checked){
-            return radioAtributo[i].value
+            addEventListenersToPlayerCards();
         }
-    }
-    console.log('Ok valor escolha')
-}
-function exibirCartaJogador(){
-    imgCard.innerHTML = `<img src="${cartaJogador.imagem}">`
-}
-/*function exibirCartaBot(){
-    jogador.innerHTML = cartaBot.nome
-    jogador.innerHTML = `<img src="cartaBot.imagem"/>`
-    atributosExibirCarta.innerHTML = cartaBot.tipo
-    atributosExibirCarta.innerHTML = cartaBot.ataque
-    atributosExibirCarta.innerHTML = cartaBot.defesa
-    console.log('Exibir ok')
-}*/
+    );
+};
 
-function batalhar(){
-    let atributoBatalha = valorEscolha()
-    if(cartaJogador.atributos[atributoBatalha] > cartaBot.atributos[atributoBatalha]){
-        console.log('voce venceu')
-    } else if(cartaJogador.atributos[atributoBatalha] < cartaBot.atributos[atributoBatalha]){
-        console.log('voce perder')
-    } else{
-        console.log('voce empatou')
-    }
+defineYugiohs();
 
-    document.getElementById('bBatalhar').disabled = true
-    document.getElementById('bResetar').disabled = false
-}
+/*****************************************/
+/*****************************************/
+/*****************************************/
+/*****************************************/
+/*****************************************/
 
-function resetar(){
-    atributos.innerHTML = ""
-    document.getElementById('bDistribuirCartas').disabled = false
-    document.getElementById('bResetar').disabled = true
-    document.getElementById('bBatalhar').hidden = true
-    document.getElementById('bResetar').hidden = true
-    document.getElementById('jogador').hidden = true
-    tAtributo.innerHTML = ""
-}
+// Yu-Gi-Oh Cards on Homepage //
+gsap.registerPlugin(ScrollTrigger);
+const pageContainer = document.querySelector(".container1");
+
+/* SMOOTH SCROLL */
+const scroller = new LocomotiveScroll({
+el: pageContainer,
+smooth: true
+});
+
+scroller.on("scroll", ScrollTrigger.update);
+
+ScrollTrigger.scrollerProxy(pageContainer, {
+scrollTop(value) {
+    return arguments.length
+    ? scroller.scrollTo(value, 0, 0)
+    : scroller.scroll.instance.scroll.y;
+},
+getBoundingClientRect() {
+    return {
+    left: 0,
+    top: 0,
+    width: window.innerWidth,
+    height: window.innerHeight
+    };
+},
+pinType: pageContainer.style.transform ? "transform" : "fixed"
+});
+
+////////////////////////////////////
+////////////////////////////////////
+window.addEventListener("load", function () {
+let pinBoxes = document.querySelectorAll(".pin-wrap > *");
+let pinWrap = document.querySelector(".pin-wrap");
+let pinWrapWidth = pinWrap.offsetWidth;
+let horizontalScrollLength = pinWrapWidth - window.innerWidth;
+
+// Pinning and horizontal scrolling
+
+gsap.to(".pin-wrap", {
+    scrollTrigger: {
+    scroller: pageContainer, //locomotive-scroll
+    scrub: true,
+    trigger: "#sectionPin",
+    pin: true,
+    // anticipatePin: 1,
+    start: "top top",
+    end: pinWrapWidth
+    },
+    x: -horizontalScrollLength,
+    ease: "none"
+});
+
+ScrollTrigger.addEventListener("refresh", () => scroller.update()); //locomotive-scroll
+
+ScrollTrigger.refresh();
+});
+

@@ -1,15 +1,3 @@
-# Run by typing python3 main.py
-
-# **IMPORTANT:** only collaborators on the project where you run
-# this can access this web server!
-"""
-    Bonus points if you want to have internship at AI Camp
-    1. How can we save what user built? And if we can save them, like allow them to publish, can we load the saved results back on the home page? 
-    2. Can you add a button for each generated item at the frontend to just allow that item to be added to the story that the user is building? 
-    3. What other features you'd like to develop to help AI write better with a user? 
-    4. How to speed up the model run? Quantize the model? Using a GPU to run the model? 
-"""
-
 # import basics
 import os
 # import stuff for our web server
@@ -20,6 +8,8 @@ from aitextgen import aitextgen
 import random
 from time import time
 import urllib.parse
+import json
+
 # setup the webserver
 # port may need to be changed if there are multiple flask servers running on same server
 port = 12345
@@ -33,27 +23,34 @@ else:
 
 app.secret_key = os.urandom(64)
 
+
 # models_folder = "model/trained_model/"
-models_folder = "model/trained_model/"
-DECK_CARD_LOCATION = "model/created_cards.txt"
-#generating = False
+models_folder = "model/trained_model_3000/"
+DECK_CARD_LOCATION = "model/created_cards.json"
+image_count = {}
 
-
-
-# img link
 # https%3A%2F%2Fi.imgur.com%2F4Uz2y6E.jpg
 # %3A :
 # %2F /
-def gen_img(card):
-    #
-    link = urllib.parse.quote('https://cocalc10.ai-camp.dev/5b0ca11b-2446-481d-9c4f-3d441cc3baeb/raw/omni/app/test.png')
-    print(link)
+def gen_img(attr, race):
+    if attr == None or race == None:
+        print('Invalid Image.')
+        return 'IMAGE'
+    else:
+        img_name = attr + race + '_' + str(random.randint(0, image_count[attr][race] - 1))
+        link = 'https://raw.githubusercontent.com/Asonjay/AI-Camp-Repo/main/SC22-BatchB-stereo-cavemen/cropped_imgs/' + img_name + '.png'
+        return link.replace(':', '%3A').replace('/', '%2F')
+
+
+def gen_url(card):
+    #link = gen_img(card['attribute'], card['race'])
     if card is not None:
-        url = 'https://www.cardmaker.net/cardmakers/yugioh/createcard.php?name=' + str(card['name']) + '&cardtype=Monster&subtype=normal&attribute='+ str(card['attribute']) +'&level='+ str(card['level']) + '&trapmagictype=None&rarity=Common&picture='+ str('https%3A%2F%2Fi.imgur.com%2F4Uz2y6E.jpg') + '&circulation=&set1=&set2=&type=' + str(card['race']) + '&carddescription=' + str(card['desc']) + '&atk='+str(card['attack']) + '&def='+str(card['defense']) + '&creator=Andrew&year=2022&serial=' + str(random.randint(10000000, 99999999))
+        url = 'https://www.cardmaker.net/cardmakers/yugioh/createcard.php?name=' + str(card['name']) + '&cardtype=Monster&subtype=normal&attribute='+ str(card['attribute']) +'&level='+ str(card['level']) + '&trapmagictype=None&rarity=Common&picture='+ card['image'] + '&circulation=&set1=&set2=&type=' + str(card['race']) + '&carddescription=' + str(card['desc']) + '&atk='+str(card['attack']) + '&def='+str(card['defense']) + '&creator=Stereo-Cavemen&year=2022&serial=' + str(random.randint(10000000, 99999999))
         #print(url)
-        return '<img src="' + url + '">'
+        return url
     else:
         return ''
+
 
 @app.route(f'{base_url}/')
 def home():
@@ -62,49 +59,48 @@ def home():
 @app.route(f'{base_url}/cardgen')
 def cardgen():
     if 'generated' not in session:
-        return render_template('cardgen.html', ai_card="", save_button="")
+        return render_template('cardgen.html', ai_card='<img src="https://www.cardmaker.net/cardmakers/yugioh/createcard.php?name=aNdReW%3F&cardtype=Xyz&subtype=normal&attribute=Divine&level=12&trapmagictype=None&rarity=Ultimate%20Rare&picture=https%3A%2F%2Fi.redd.it%2Fk4to8eganwo41.jpg&circulation=&set1=&set2=&type=Andrew&carddescription=My%20name%20is%20Andrew%20and%20I%20am%20a%20type%20of%20Yu-gi-oh.&atk=9999&def=9999&creator=&year=&serial=" width=350px height=510px')
     else:
-        card_img = gen_img(session['generated'])
-        session['saved'] = False;
-        save_text = 'Save Card to Deck!'
-        if session['saved']:
-            save_text = 'Your Card is Saved!'
-        return render_template('cardgen.html', ai_card=card_img, save_button='<form action=\"/5b0ca11b-2446-481d-9c4f-3d441cc3baeb/port/12345/save_card\" method="POST" id="sub-form" name="form-1"source="custom"><div style="text-align: center; font-size: 30px;"><button class="btn btn-primary" type="submit" value="Save To Deck">'+save_text+'</button></div><br></form>')
+        card_img = session['generated']['url']
+        return render_template('cardgen.html', ai_card='<img src="' + card_img + '" width=350px height=510px>')
 
-@app.route(f'{base_url}/generate_text', methods=["POST"])
-def generate_text():
+
+@app.route(f'{base_url}/Generate', methods=["POST"])
+def generate():
     prompt = request.form['prompt']
-    which_model = request.form['model']
+    if prompt.replace(' ','') == '':
+        session['generated'] = Card(0, 0, 0, 'Divine-Beast', 'N/A', 'Invalid Name!', 'DIVINE').get()
+        return redirect(url_for('cardgen'))
+    try:
+        which_model = request.form['radio_attributes']
+    except:
+        session['generated'] = Card(0, 0, 0, 'Divine-Beast', 'N/A', 'Invalid Name!', 'DIVINE').get()
+        return redirect(url_for('cardgen'))
+    temp = float(request.form['temperature'])
+    if temp == 0:
+        temp = 0.01
     model_str = str(which_model)
-    print(str(prompt)+": "+str(which_model))
-    card = None
-    if model_str == "🌑":
-        card = gen_card('DARK', prompt)
-    elif model_str == "☀️":
-        card = gen_card('LIGHT', prompt)
-    elif model_str == "🔥":
-        card = gen_card('FIRE', prompt)
-    elif model_str == "💧":
-        card = gen_card('WATER', prompt)
-    elif model_str == "⛰️":
-        card = gen_card('EARTH', prompt)
-    else:
-        card = gen_card('WIND', prompt)
+    print(str(prompt)+": "+str(model_str)+ " : "+str(temp))
+    card = gen_card(model_str, prompt, temp)
     session['generated'] = card.get()
-
+    save(session['generated'])
     return redirect(url_for("cardgen"))
+
 
 @app.route(f'{base_url}/cardbattle')
 def cardbattle():
     return render_template('cardbattle.html')
 
+
 @app.route(f'{base_url}/howitworks')
 def howitworks():
     return render_template('howitworks.html')
 
+
 @app.route(f'{base_url}/teams')
 def teams():
     return render_template('teams.html')
+
 
 def fix_capitalization(str):
     return str[0].upper() + str[1:].lower()
@@ -119,127 +115,100 @@ class Card:
             'race': _race,
             'desc': _desc,
             'name': _name,
-            'attribute': _attr
+            'attribute': _attr,
+            'image': '',
+            'url': ''
         }
-        print(self.__str__())
+        self.card['image'] = gen_img(self.card['attribute'], self.card['race'])
+        self.card['url'] = gen_url(self.card)
+        #print(self.__str__())
 
     def get(self):
         return self.card
+
     def from_str(self, card_str):
-        data = card_str.split("|")
+        data = ''
+        if '}>' in card_str:
+            data = card_str[card_str.find('}>')+2:].split("|")
+        else:
+            data = card_str.split("|")
+        print(data)
         self.card = {
             'attack': int(data[0]),
             'defense': int(data[1]),
             'level': int(data[2]),
-            'race': int(data[3]),
-            'desc': int(data[4]),
-            'name': int(data[5]),
-            'attribute': int(data[6])
+            'race': str(data[3]),
+            'desc': str(data[4]),
+            'name': str(data[5]),
+            'attribute': str(data[6]),
+            'image': str(data[7]),
+            'url': ''
         }
-def __str__(card):
-    return str(card['attack'])+"|"+str(card['defense'])+"|"+str(card['level'])+"|"+card['race']+"|"+card['desc']+"|"+card['name']+"|"+card['attribute']
 
-
-def read():
-    try:
-        with open(DECK_CARD_LOCATION, "r") as txt_file:
-            out = ''
-            for s in txt_file.readlines():
-                out+=s
-            return out
-    except:
-        return ''
 
 def save(card):
+    url_json = {}
+    if os.path.isfile(DECK_CARD_LOCATION):
+        with open('./model/created_cards.json', 'r') as f:
+            url_json = json.load(f)
     t = int(time())
-    data = read()
-    while str(t) in data:
-        t+=1 #This is to prevent cards with duplicate IDs
-    if not str(data) == '':
-        data = str(data) + '<{'
-    card_file = str(data)+str(t)+'}>'+__str__(card)
-    with open(DECK_CARD_LOCATION, 'w') as file:
-        file.write(card_file)
-    session['saved'] = True
-        #Example Card List:
-#         1657642313}>1400|600|4|Spellcaster|DESCRIPTION|BANANA|LIGHT<{1657644732}>2200|1800|6|Plant|DESCRIPTION|ORANGE|FIRE
-#         '<{' is the separator for between each card.
-#         '}>' is the separator between the timestamp and the card
+    while str(t) in url_json:
+        t+=1
 
-@app.route(f'{base_url}/save_card/', methods=['POST'])
-def save_card():
-    if 'saved' not in session:
-        session['saved'] = False
-    if not session['saved']:
-        save(session['generated'])
-    return redirect(url_for("cardgen"))
+    url_json[str(t)] = card
 
-def gen_card(attr, inp):
+    with open(DECK_CARD_LOCATION, 'w') as out:
+        json.dump(url_json, out)
+
+
+def gen_card(attr, inp, temp):
     #print("Creating the card with input '"+str(inp)+"' with attribute '"+str(attr)+"'")
     name = fix_capitalization(inp)  #Turns 'DARK' -> 'Dark' and 'dark' -> 'Dark'
 
     ai = aitextgen(model_folder=models_folder + attr + "/", to_gpu=False)
-    monster_data = ai.generate(n=1, prompt="<" + str(inp) + ">~", temperature=1, return_as_list=True)[0]
+    monster_data = ai.generate(n=1, prompt="<" + str(inp) + ">~", temperature=temp, return_as_list=True)[0]
     data_list = monster_data.split("~")
     monster_stats = data_list[2].split("|")
-    print(monster_stats)
-    monster_attack = monster_stats[0][monster_stats[0].find(":") + 1:].split(".")[0]
-    monster_defense = monster_stats[1][monster_stats[1].find(":") + 1:].split(".")[0]
-    monster_level = monster_stats[2][monster_stats[2].find(":") + 1:].split(".")[0]
-    monster_race = monster_stats[3][monster_stats[3].find(":") + 1:]
-    monster_desc = data_list[1].replace('"', '%22').replace(' ', '%20')
-
-    monster_name = data_list[0][1:-1]
+    default_races = {
+        'DARK': 'Warrior',
+        'EARTH': 'Beast',
+        'FIRE': 'Dinosaur',
+        'LIGHT': 'Fairy',
+        'WATER': 'Aqua',
+        'WIND': 'Dragon'
+    }
+    #print(monster_stats)
+    try: monster_attack = monster_stats[0][monster_stats[0].find(":") + 1:].split(".")[0]
+    except: monster_attack = 0
+    try: monster_defense = monster_stats[1][monster_stats[1].find(":") + 1:].split(".")[0]
+    except: monster_defense = 0
+    try: monster_level = monster_stats[2][monster_stats[2].find(":") + 1:].split(".")[0]
+    except: monster_level = 1
+    try: monster_race = monster_stats[3][monster_stats[3].find(":") + 1:]
+    except: monster_race = default_races[attr.upper()]
+    try: monster_desc = data_list[1].replace('"', '%22').replace(' ', '%20')
+    except: monster_desc = 'This card has broken for some reason...'
+    try: monster_name = data_list[0][1:-1]
+    except: monster_name = 'Broken Card'
     monster_type = attr
 
     card = Card(monster_attack, monster_defense, monster_level, monster_race, monster_desc, monster_name, monster_type)
     return card
 
 
-# STUFF BACKEND NEEDS (Good job)
-# 1. Make a thing that saves the users chosen cards to a file (so they can make a deck)
-# 2. Reading the CSV input data and then display it
-# 3. Make a card class
-# 
-#ATK:1000.0|DEF:1800.0|LEVEL:1.0|RACE:Machine
+@app.route(f'{base_url}/return_json')
+def return_json():
+    with open('./model/created_cards.json', 'r') as f:
+        json_obj =  json.load(f)
+        for __, obj in json_obj.items():
+            obj['url'] = obj['url'].replace('%3A', ':').replace('%2F', '/')
+    return json_obj
 
-# @app.route(f'{base_url}', methods=['POST'])
-# def home_post():
-#     return redirect(url_for('results'))
-
-# @app.route(f'{base_url}/results/')
-# def results():
-#     if 'data' in session:
-#         data = session['data']
-#         return render_template('Write-your-story-with-AI.html', generated=data)
-#     else:
-#         return render_template('Write-your-story-with-AI.html', generated=None)
-
-# @app.route(f'{base_url}/generate_text/', methods=["POST"])
-# def generate_text():
-#     """
-#     view function that will return json response for generated text.
-#     """
-#     prompt = request.form['prompt']
-#     if prompt is not None:
-#         generated = ai.generate(
-#             n=1,
-#             batch_size=3,
-#             prompt=str(prompt),
-#             max_length=300,
-#             temperature=0.9,
-#             return_as_list=True
-#         )
-#     session['data'] = generated[0]
-#     return redirect(url_for('results'))
-
-# # define additional routes here
-# # for example:
-# # @app.route(f'{base_url}/team_members')
-# # def team_members():
-# #     return render_template('team_members.html') # would need to actually make this page
 
 if __name__ == '__main__':
+    with open('./img_process/img_count.json', 'r') as f:
+        image_count = json.load(f)
+    
     # IMPORTANT: change url to the site where you are editing this file.
     website_url = 'cocalc10.ai-camp.dev'
 
